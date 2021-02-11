@@ -53,20 +53,36 @@ class _ListaPageState extends State<ListaPage> {
   }
 
   Widget _crearLista() {
-    return ListView.builder(
-      controller: _scrollController,
-      itemCount: _listaNumeros
-          .length, // cuantos elementos tiene esta lista en este preciso instante
-      itemBuilder: (BuildContext context, int index) {
-        // Builder es la forma como se va a dibujar ese elemento o widget,
-        final imagen = _listaNumeros[index];
+    return RefreshIndicator(
+      onRefresh:
+          obtenerPagina1, // aqui regresa un future porque cuando el future se resuelva automaticamente se va a cancelar el simbolito del indicador
 
-        return FadeInImage(
-          image: NetworkImage('https://picsum.photos/500/300/?image=$imagen'),
-          placeholder: AssetImage('assets/jar-loading.gif'),
-        );
-      },
+      child: ListView.builder(
+        // ctrl . wrap widget
+        controller: _scrollController,
+        itemCount: _listaNumeros
+            .length, // cuantos elementos tiene esta lista en este preciso instante
+        itemBuilder: (BuildContext context, int index) {
+          // Builder es la forma como se va a dibujar ese elemento o widget,
+          final imagen = _listaNumeros[index];
+
+          return FadeInImage(
+            image: NetworkImage('https://picsum.photos/500/300/?image=$imagen'),
+            placeholder: AssetImage('assets/jar-loading.gif'),
+          );
+        },
+      ),
     );
+  }
+
+  Future<Null> obtenerPagina1() async {
+    final duration = new Duration(seconds: 2);
+    new Timer(duration, () {
+      _listaNumeros.clear();
+      _ultimoItem++;
+      _agregar10();
+    });
+    return Future.delayed(duration);
   }
 
   void _agregar10() {
@@ -94,9 +110,7 @@ class _ListaPageState extends State<ListaPage> {
         false; // si ya pasaron 2 segundos quiere decir que ya termine de cargar
 
     _scrollController.animateTo(_scrollController.position.pixels + 100,
-        curve: Curves.fastOutSlowIn,
-         duration: Duration(milliseconds: 250)
-        );
+        curve: Curves.fastOutSlowIn, duration: Duration(milliseconds: 250));
 
     _agregar10();
   }

@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       routes:
           getAplicationRoutes(), // cuando la ruta no esta definida en este grupo se dispara el onGenerateRoute
 
-      onGenerateRoute: (RouteSettings settings) {
+      onGenerateRoute: (RouteSettings settings) { // el onGenerateRoute se va a disparar si esa ruta no se encuentra en ese mapa getAplicationRoutes
         print('Ruta llamada: ${settings.name}');
 
         return MaterialPageRoute(
