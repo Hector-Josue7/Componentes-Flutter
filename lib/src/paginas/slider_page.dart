@@ -23,6 +23,7 @@ class _SliderPageState extends State<SliderPage> {
           children: <Widget>[
             _crearSlider(),
             _checkBox(),
+            _crearSwitch(),
             Expanded(child: _crearImagen())
           ],
         ),
@@ -38,24 +39,54 @@ class _SliderPageState extends State<SliderPage> {
       value: _valorSlider,
       min: 10.0,
       max: 400.0,
-      onChanged: (valor) {
-        // es un metodo que va a recibir el valor que tenga ese slider
-        setState(() {
-          _valorSlider = valor;
-        });
-        // print(valor);
-      },
+      onChanged: (!_bloquearCheck) ? null: (valor) {
+              // es un metodo que va a recibir el valor que tenga ese slider
+              setState(() {
+                _valorSlider = valor;
+              });
+              // print(valor);
+            },
     );
   }
 
   Widget _checkBox() {
+    /*
     return Checkbox(
       value: _bloquearCheck,
       onChanged: (valor) {
+            setState(() {
         _bloquearCheck = valor; // bloquearCheck va a ser igual al valor que estoy recibiendo del checkBox
+        
+        });
       },
+  );
+     */
+
+    return CheckboxListTile(
+      title: Text('Bloquear slider'),
+      value: _bloquearCheck,
+        onChanged: (valor) {
+              setState(() {
+             _bloquearCheck = valor; // bloquearCheck va a ser igual al valor que estoy recibiendo del checkBox
+          });
+        },
+
     );
   }
+
+Widget _crearSwitch(){
+
+  return SwitchListTile(
+      title: Text('Bloquear slider'),
+      value: _bloquearCheck,
+        onChanged: (valor) {
+              setState(() {
+             _bloquearCheck = valor; // bloquearCheck va a ser igual al valor que estoy recibiendo del checkBox
+          });
+        },
+
+    );
+}
 
   Widget _crearImagen() {
     return Image(
